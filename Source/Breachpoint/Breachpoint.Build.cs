@@ -18,7 +18,12 @@ public class Breachpoint : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"Slate"
+			"Slate",
+			"SlateCore",
+			"HeadMountedDisplay",
+			"NavigationSystem",
+			"OnlineSubsystem",
+			"OnlineSubsystemUtils"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
@@ -30,7 +35,11 @@ public class Breachpoint : ModuleRules
 			"Breachpoint/Variant_Shooter",
 			"Breachpoint/Variant_Shooter/AI",
 			"Breachpoint/Variant_Shooter/UI",
-			"Breachpoint/Variant_Shooter/Weapons"
+			"Breachpoint/Variant_Shooter/Weapons",
+			"Breachpoint/Variant_Shooter/Modes",
+			"Breachpoint/Variant_Shooter/Movement",
+			"Breachpoint/VR",
+			"Breachpoint/Lobby"
 		});
 
 		// Uncomment if you are using Slate UI
