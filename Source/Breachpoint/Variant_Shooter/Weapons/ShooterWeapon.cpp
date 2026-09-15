@@ -225,3 +225,14 @@ const TSubclassOf<UAnimInstance>& AShooterWeapon::GetThirdPersonAnimInstanceClas
 {
 	return ThirdPersonAnimInstanceClass;
 }
+
+void AShooterWeapon::RefillMagazine()
+{
+	CurrentBullets = MagazineSize;
+
+	// Notify the holder so the HUD updates
+	if (WeaponOwner)
+	{
+		WeaponOwner->UpdateWeaponHUD(CurrentBullets, MagazineSize);
+	}
+}

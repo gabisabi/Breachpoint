@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "LobbyTypes.h"
+#include "Lobby/LobbyTypes.h"
 #include "LobbyGameMode.generated.h"
 
 class ALobbyPlayerController;

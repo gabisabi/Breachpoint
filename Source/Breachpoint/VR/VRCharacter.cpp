@@ -13,6 +13,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "InputActionValue.h"
 #include "MotionControllerComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
 #include "TimerManager.h"
 
@@ -167,7 +168,7 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 //  Weapon Overrides
 // ────────────────────────────────────────────────────
 
-void AVRCharacter::AttachWeaponMeshes()
+void AVRCharacter::AttachWeaponMeshes(AShooterWeapon* Weapon)
 {
 	// Attach weapon to right motion controller instead of the first-person mesh
 	if (RightMotionController)
@@ -177,7 +178,7 @@ void AVRCharacter::AttachWeaponMeshes()
 		// normally attaches to FirstPersonMesh, but redirect the attach target.
 		// If AShooterCharacter exposes a socket-based attach, override the socket
 		// parent here.  Fallback: call Super and re-parent.
-		Super::AttachWeaponMeshes();
+		Super::AttachWeaponMeshes(Weapon);
 
 		// Re-parent the first-person weapon mesh to the right controller
 		if (FirstPersonMesh)
@@ -189,7 +190,7 @@ void AVRCharacter::AttachWeaponMeshes()
 	}
 }
 
-FVector AVRCharacter::GetWeaponTargetLocation() const
+FVector AVRCharacter::GetWeaponTargetLocation()
 {
 	if (RightMotionController)
 	{

@@ -177,4 +177,7 @@ public:
 
 	/** Returns the current bullet count */
 	int32 GetBulletCount() const { return CurrentBullets; }
+
+	/** Refills the magazine to full capacity (called by reload component) */
+	void RefillMagazine();
 };

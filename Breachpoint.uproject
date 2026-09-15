@@ -40,14 +40,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "MetaXR",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Android"
-			]
-		},
-		{
 			"Name": "OnlineSubsystem",
 			"Enabled": true
 		}

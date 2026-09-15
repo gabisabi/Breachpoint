@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "WeaponSlotInfo.generated.h"
 
+class UTexture2D;
+
 /**
  *  Describes a single weapon slot in the player's inventory for UI display
  */

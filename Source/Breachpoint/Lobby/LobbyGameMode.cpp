@@ -1,7 +1,7 @@
 // Copyright Breachpoint. All Rights Reserved.
 
-#include "LobbyGameMode.h"
-#include "LobbyPlayerController.h"
+#include "Lobby/LobbyGameMode.h"
+#include "Lobby/LobbyPlayerController.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 

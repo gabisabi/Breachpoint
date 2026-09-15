@@ -76,8 +76,8 @@ public:
 
 protected:
 
-	/** The character this HUD is currently bound to */
-	UPROPERTY(BlueprintReadOnly, Category="PlayerHUD")
+	/** The character this HUD is currently bound to (weak ref — widget must not keep character alive) */
+	UPROPERTY()
 	TWeakObjectPtr<AShooterCharacter> BoundCharacter;
 
 	/** Cached game mode display name */

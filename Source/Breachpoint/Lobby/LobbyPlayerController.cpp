@@ -1,8 +1,8 @@
 // Copyright Breachpoint. All Rights Reserved.
 
-#include "LobbyPlayerController.h"
-#include "LobbyUI.h"
-#include "LobbyGameMode.h"
+#include "Lobby/LobbyPlayerController.h"
+#include "Lobby/LobbyUI.h"
+#include "Lobby/LobbyGameMode.h"
 #include "Net/UnrealNetwork.h"
 #include "Blueprint/UserWidget.h"
 

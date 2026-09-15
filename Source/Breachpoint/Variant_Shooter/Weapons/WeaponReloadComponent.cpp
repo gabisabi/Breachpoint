@@ -72,6 +72,12 @@ void UWeaponReloadComponent::FinishReload()
 	// Clear the timer in case FinishReload was called manually before it expired
 	GetWorld()->GetTimerManager().ClearTimer(ReloadTimer);
 
+	// Refill the magazine
+	if (OwningWeapon.IsValid())
+	{
+		OwningWeapon->RefillMagazine();
+	}
+
 	// Broadcast the finished delegate
 	OnReloadFinished.Broadcast();
 }

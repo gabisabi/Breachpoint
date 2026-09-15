@@ -17,6 +17,7 @@ class USplineComponent;
 class USplineMeshComponent;
 class UStaticMeshComponent;
 class UHapticFeedbackEffect_Base;
+class AShooterWeapon;
 
 /**
  * VR-specific character extending the Shooter character with motion controller support,
@@ -181,10 +182,10 @@ protected:
 	// ──────────────────────────────────────────────
 
 	/** Attach weapon meshes to the right motion controller instead of the FP mesh. */
-	virtual void AttachWeaponMeshes() override;
+	virtual void AttachWeaponMeshes(AShooterWeapon* Weapon) override;
 
 	/** Return aim target based on right motion controller forward vector. */
-	virtual FVector GetWeaponTargetLocation() const override;
+	virtual FVector GetWeaponTargetLocation() override;
 
 	// ──────────────────────────────────────────────
 	//  Input Handlers
