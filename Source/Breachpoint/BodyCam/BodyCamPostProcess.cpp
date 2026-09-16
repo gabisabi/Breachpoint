@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DirectionalLight.h"
@@ -62,7 +63,7 @@ void UBodyCamPostProcess::ApplyPostProcessSettings(float DeltaTime)
 	if (!CachedCamera) return;
 
 	FPostProcessSettings& PP = CachedCamera->PostProcessSettings;
-	CachedCamera->bUseAdditivePostProcessSettings = true; // layer on top
+	CachedCamera->PostProcessBlendWeight = 1.0f; // layer on top
 
 	const float Alpha = MasterIntensity;
 

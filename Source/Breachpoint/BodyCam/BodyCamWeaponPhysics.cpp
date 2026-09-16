@@ -149,8 +149,8 @@ void UBodyCamWeaponPhysics::UpdateRecoilRecovery(float DeltaTime)
 	}
 
 	// Smoothly decay toward zero
-	const float Rate = RecoilPattern.RecoveryRate * DeltaTime;
-	AccumulatedRecoil = FMath::Vector2DInterpTo(AccumulatedRecoil, FVector2D::ZeroVector, DeltaTime, RecoilPattern.RecoveryRate);
+	AccumulatedRecoil.X = FMath::FInterpTo(AccumulatedRecoil.X, 0.0f, DeltaTime, RecoilPattern.RecoveryRate);
+	AccumulatedRecoil.Y = FMath::FInterpTo(AccumulatedRecoil.Y, 0.0f, DeltaTime, RecoilPattern.RecoveryRate);
 
 	// Reset pattern index once recovered so next burst starts fresh
 	if (AccumulatedRecoil.IsNearlyZero(0.05f))

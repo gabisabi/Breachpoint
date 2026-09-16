@@ -154,4 +154,10 @@ public:
 
 	/** Signals this character to stop shooting */
 	void StopShooting();
+
+	/** Returns the team byte for this NPC */
+	uint8 GetTeam() const { return TeamByte; }
+
+	/** Sets the team ID for this NPC */
+	void SetTeam(uint8 Team) { TeamByte = Team; }
 };
