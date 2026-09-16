@@ -189,6 +189,15 @@ public:
 	/** Returns true if the character is dead */
 	bool IsDead() const;
 
+	/** Returns the team byte for this character */
+	uint8 GetTeam() const { return TeamByte; }
+
+	/** Returns the current HP */
+	float GetCurrentHP() const { return CurrentHP; }
+
+	/** Returns the max HP */
+	float GetMaxHP() const { return MaxHP; }
+
 	/** Sets the team ID for this character */
 	void SetTeam(uint8 Team);
 

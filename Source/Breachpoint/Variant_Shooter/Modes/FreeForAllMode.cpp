@@ -55,7 +55,7 @@ void AFreeForAllMode::OnEnemyKilled(uint8 TeamByte)
 
 void AFreeForAllMode::OnPlayerDied()
 {
-	// Credit a random alive enemy with the kill
+	// Credit an alive enemy with the kill, using the NPC's actual team byte
 	TArray<AActor*> Enemies;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterNPC::StaticClass(), Enemies);
 
@@ -66,17 +66,7 @@ void AFreeForAllMode::OnPlayerDied()
 			AShooterCharacter* EnemyChar = Cast<AShooterCharacter>(Enemy);
 			if (EnemyChar)
 			{
-				// Find the enemy's team or fallback to team 1
-				uint8 EnemyTeam = 1;
-				for (const auto& Pair : TeamNames)
-				{
-					// Credit the first alive enemy found
-					EnemyTeam = Pair.Key;
-					if (Pair.Key != PlayerTeamByte)
-					{
-						break;
-					}
-				}
+				const uint8 EnemyTeam = EnemyChar->GetTeam();
 
 				int32& Kills = KillsByTeam.FindOrAdd(EnemyTeam);
 				++Kills;

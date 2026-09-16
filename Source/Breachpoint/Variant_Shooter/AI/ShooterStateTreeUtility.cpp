@@ -37,7 +37,7 @@ bool FStateTreeLineOfSightToTargetCondition::TestCondition(FStateTreeExecutionCo
 	InstanceData.Target->GetActorBounds(true, CenterOfMass, Extent, false);
 
 	// divide the vertical extent by the number of line of sight checks we'll do
-	const float ExtentZOffset = Extent.Z * 2.0f / InstanceData.NumberOfVerticalLineOfSightChecks;
+	const float ExtentZOffset = Extent.Z * 2.0f / FMath::Max(1, InstanceData.NumberOfVerticalLineOfSightChecks);
 
 	// get the character's camera location as the source for the line checks
 	const FVector Start = InstanceData.Character->GetFirstPersonCameraComponent()->GetComponentLocation();

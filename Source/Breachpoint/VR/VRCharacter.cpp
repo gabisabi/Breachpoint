@@ -95,8 +95,11 @@ void AVRCharacter::BeginPlay()
 		}
 	}
 
-	// Reset HMD orientation at start
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+	// Reset HMD orientation at start (only for local player)
+	if (IsLocallyControlled())
+	{
+		UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+	}
 }
 
 void AVRCharacter::Tick(float DeltaTime)

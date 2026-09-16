@@ -35,7 +35,10 @@ void AHorrorCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
 	// start the sprint tick timer
-	GetWorld()->GetTimerManager().SetTimer(SprintTimer, this, &AHorrorCharacter::SprintFixedTick, SprintFixedTickTime, true);
+	if (SprintFixedTickTime > 0.f)
+	{
+		GetWorld()->GetTimerManager().SetTimer(SprintTimer, this, &AHorrorCharacter::SprintFixedTick, SprintFixedTickTime, true);
+	}
 }
 
 void AHorrorCharacter::EndPlay(EEndPlayReason::Type EndPlayReason)
@@ -138,6 +141,6 @@ void AHorrorCharacter::SprintFixedTick()
 	}
 
 	// broadcast the sprint meter updated delegate
-	OnSprintMeterUpdated.Broadcast(SprintMeter / SprintTime);
+	OnSprintMeterUpdated.Broadcast(SprintMeter / FMath::Max(SprintTime, 0.001f));
 
 }

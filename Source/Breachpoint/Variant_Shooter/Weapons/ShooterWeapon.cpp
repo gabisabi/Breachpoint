@@ -111,7 +111,7 @@ void AShooterWeapon::StartFiring()
 		// if we're full auto, schedule the next shot
 		if (bFullAuto)
 		{
-			GetWorld()->GetTimerManager().SetTimer(RefireTimer, this, &AShooterWeapon::Fire, TimeSinceLastShot, false);
+			GetWorld()->GetTimerManager().SetTimer(RefireTimer, this, &AShooterWeapon::Fire, FMath::Max(0.f, RefireRate - TimeSinceLastShot), false);
 		}
 
 	}
@@ -130,6 +130,12 @@ void AShooterWeapon::Fire()
 {
 	// ensure the player still wants to fire. They may have let go of the trigger
 	if (!bIsFiring)
+	{
+		return;
+	}
+
+	// ensure we have ammo
+	if (CurrentBullets <= 0)
 	{
 		return;
 	}
@@ -190,12 +196,6 @@ void AShooterWeapon::FireProjectile(const FVector& TargetLocation)
 
 	// consume bullets
 	--CurrentBullets;
-
-	// if the clip is depleted, reload it
-	if (CurrentBullets <= 0)
-	{
-		CurrentBullets = MagazineSize;
-	}
 
 	// update the weapon HUD
 	WeaponOwner->UpdateWeaponHUD(CurrentBullets, MagazineSize);

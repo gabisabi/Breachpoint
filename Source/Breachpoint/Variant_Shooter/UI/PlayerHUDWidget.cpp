@@ -24,8 +24,11 @@ void UPlayerHUDWidget::SetupForCharacter(AShooterCharacter* Character)
 	Character->OnBulletCountUpdated.AddDynamic(this, &UPlayerHUDWidget::HandleBulletCountUpdated);
 	Character->OnDamaged.AddDynamic(this, &UPlayerHUDWidget::HandleDamaged);
 
-	// Push initial state to the Blueprint layer
-	BP_UpdateHealth(0.0f, 0.0f, 1.0f);
+	// Push initial state to the Blueprint layer using the character's actual health
+	const float HP = Character->GetCurrentHP();
+	const float Max = Character->GetMaxHP();
+	const float Pct = (Max > 0.0f) ? (HP / Max) : 1.0f;
+	BP_UpdateHealth(HP, Max, Pct);
 
 	if (!CachedModeName.IsEmpty())
 	{

@@ -204,7 +204,7 @@ void UShooterMovementComponent::StartTackle()
 	}
 
 	// Duration based on distance / speed
-	const float TackleDuration = TackleDistance / TackleLungeSpeed;
+	const float TackleDuration = TackleDistance / FMath::Max(1.f, TackleLungeSpeed);
 	GetWorld()->GetTimerManager().SetTimer(TackleTimerHandle, this, &UShooterMovementComponent::OnTackleFinished, TackleDuration, false);
 }
 

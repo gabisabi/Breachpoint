@@ -22,6 +22,14 @@ public:
 	/** Sets up delegate listeners for the passed character */
 	void SetupCharacter(AHorrorCharacter* HorrorCharacter);
 
+protected:
+
+	/** The character this UI is currently bound to (weak ref) */
+	UPROPERTY()
+	TWeakObjectPtr<AHorrorCharacter> BoundCharacter;
+
+public:
+
 	/** Called when the character's sprint meter is updated */
 	UFUNCTION()
 	void OnSprintMeterUpdated(float Percent);
