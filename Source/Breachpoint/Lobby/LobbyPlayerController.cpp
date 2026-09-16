@@ -3,8 +3,10 @@
 #include "Lobby/LobbyPlayerController.h"
 #include "Lobby/LobbyUI.h"
 #include "Lobby/LobbyGameMode.h"
+#include "Variant_Shooter/Modes/BreachpointHUD.h"
 #include "Net/UnrealNetwork.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/InputComponent.h"
 
 ALobbyPlayerController::ALobbyPlayerController()
 {
@@ -19,12 +21,80 @@ void ALobbyPlayerController::BeginPlay()
 
 	if (IsLocalController())
 	{
-		// Set input mode to UI-only in the lobby
-		FInputModeUIOnly InputMode;
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		SetInputMode(InputMode);
+		// Set the canvas HUD to lobby main menu
+		if (ABreachpointHUD* BreachpointHUD = Cast<ABreachpointHUD>(GetHUD()))
+		{
+			BreachpointHUD->CurrentScreen = ELobbyScreen::MainMenu;
+			BreachpointHUD->SelectedIndex = 0;
+		}
 
+		// Also create the UMG lobby UI if a class is configured (for Blueprint-based lobbies)
 		CreateLobbyUI();
+	}
+}
+
+void ALobbyPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	// Bind navigation keys for the canvas-drawn lobby HUD
+	if (InputComponent)
+	{
+		InputComponent->BindKey(EKeys::Up, IE_Pressed, this, &ALobbyPlayerController::OnUpPressed);
+		InputComponent->BindKey(EKeys::Down, IE_Pressed, this, &ALobbyPlayerController::OnDownPressed);
+		InputComponent->BindKey(EKeys::Left, IE_Pressed, this, &ALobbyPlayerController::OnLeftPressed);
+		InputComponent->BindKey(EKeys::Right, IE_Pressed, this, &ALobbyPlayerController::OnRightPressed);
+		InputComponent->BindKey(EKeys::Enter, IE_Pressed, this, &ALobbyPlayerController::OnConfirmPressed);
+		InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &ALobbyPlayerController::OnBackPressed);
+		InputComponent->BindKey(EKeys::BackSpace, IE_Pressed, this, &ALobbyPlayerController::OnBackPressed);
+	}
+}
+
+void ALobbyPlayerController::OnUpPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateUp();
+	}
+}
+
+void ALobbyPlayerController::OnDownPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateDown();
+	}
+}
+
+void ALobbyPlayerController::OnLeftPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateLeft();
+	}
+}
+
+void ALobbyPlayerController::OnRightPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateRight();
+	}
+}
+
+void ALobbyPlayerController::OnConfirmPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->Confirm();
+	}
+}
+
+void ALobbyPlayerController::OnBackPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->GoBack();
 	}
 }
 

@@ -77,86 +77,104 @@ void AShooterPlayerController::SetupInputComponent()
 		}
 	}
 
-	// Breachpoint game mode menu bindings
+	// ── Key bindings for HUD navigation ──────────────────────────
 	if (InputComponent)
 	{
-		InputComponent->BindKey(EKeys::Tab, IE_Pressed, this, &AShooterPlayerController::ToggleModeMenu);
-		InputComponent->BindKey(EKeys::Enter, IE_Pressed, this, &AShooterPlayerController::HandleRestartKey);
-
-		InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AShooterPlayerController::SelectMode1);
-		InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &AShooterPlayerController::SelectMode2);
-		InputComponent->BindKey(EKeys::Three, IE_Pressed, this, &AShooterPlayerController::SelectMode3);
-		InputComponent->BindKey(EKeys::Four, IE_Pressed, this, &AShooterPlayerController::SelectMode4);
+		InputComponent->BindKey(EKeys::Up, IE_Pressed, this, &AShooterPlayerController::OnUpPressed);
+		InputComponent->BindKey(EKeys::Down, IE_Pressed, this, &AShooterPlayerController::OnDownPressed);
+		InputComponent->BindKey(EKeys::Left, IE_Pressed, this, &AShooterPlayerController::OnLeftPressed);
+		InputComponent->BindKey(EKeys::Right, IE_Pressed, this, &AShooterPlayerController::OnRightPressed);
+		InputComponent->BindKey(EKeys::Enter, IE_Pressed, this, &AShooterPlayerController::OnConfirmPressed);
+		InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AShooterPlayerController::OnBackPressed);
+		InputComponent->BindKey(EKeys::BackSpace, IE_Pressed, this, &AShooterPlayerController::OnBackPressed);
+		InputComponent->BindKey(EKeys::Tab, IE_Pressed, this, &AShooterPlayerController::OnTabPressed);
 	}
 }
 
-void AShooterPlayerController::ToggleModeMenu()
+// ═══════════════════════════════════════════════════════════════════════════════
+// HUD Navigation — route key events to the canvas HUD
+// ═══════════════════════════════════════════════════════════════════════════════
+
+void AShooterPlayerController::OnUpPressed()
 {
-	if (ABreachpointHUD* BreachpointHUD = Cast<ABreachpointHUD>(GetHUD()))
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
 	{
-		BreachpointHUD->bMenuOpen = !BreachpointHUD->bMenuOpen;
+		HUD->NavigateUp();
+	}
+}
+
+void AShooterPlayerController::OnDownPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateDown();
+	}
+}
+
+void AShooterPlayerController::OnLeftPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateLeft();
+	}
+}
+
+void AShooterPlayerController::OnRightPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->NavigateRight();
+	}
+}
+
+void AShooterPlayerController::OnConfirmPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->Confirm();
+	}
+}
+
+void AShooterPlayerController::OnBackPressed()
+{
+	if (ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD()))
+	{
+		HUD->GoBack();
+	}
+}
+
+void AShooterPlayerController::OnTabPressed()
+{
+	ABreachpointHUD* HUD = Cast<ABreachpointHUD>(GetHUD());
+	if (!HUD)
+	{
 		return;
 	}
 
-	// fallback for game modes without the Breachpoint HUD (e.g. the default arena):
-	// show the menu as on-screen messages; the number keys work the same way
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(101, 8.0f, FColor::Orange, TEXT("BREACHPOINT - choose a game mode:"));
-		GEngine->AddOnScreenDebugMessage(102, 8.0f, FColor::White, TEXT("  1 - Arena    2 - Horde    3 - Gun Game    4 - Team Deathmatch"));
-	}
-}
-
-bool AShooterPlayerController::IsModeMenuOpen() const
-{
-	if (const ABreachpointHUD* BreachpointHUD = Cast<ABreachpointHUD>(GetHUD()))
-	{
-		return BreachpointHUD->bMenuOpen;
-	}
-
-	// without the Breachpoint HUD the fallback menu is always considered open
-	return true;
-}
-
-void AShooterPlayerController::SelectGameMode(int32 ModeIndex)
-{
-	if (!IsModeMenuOpen())
+	// If in a lobby screen, Tab does nothing (use Escape to go back)
+	if (HUD->CurrentScreen != ELobbyScreen::None)
 	{
 		return;
 	}
 
-	static const TCHAR* ModeOptions[] = {
-		TEXT(""),
-		TEXT("?game=/Script/Breachpoint.HordeGameMode"),
-		TEXT("?game=/Script/Breachpoint.GunGameMode"),
-		TEXT("?game=/Script/Breachpoint.TeamDeathmatchMode")
-	};
-
-	if (ModeIndex < 0 || ModeIndex > 3)
-	{
-		return;
-	}
-
-	UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this, true)), true, ModeOptions[ModeIndex]);
-}
-
-void AShooterPlayerController::HandleRestartKey()
-{
+	// If match has ended, Tab returns to lobby
 	ABreachpointModeBase* Mode = Cast<ABreachpointModeBase>(GetWorld()->GetAuthGameMode());
-
-	// restart when the match has ended, or from the menu
-	if ((Mode && Mode->IsMatchEnded()) || IsModeMenuOpen())
+	if (Mode && Mode->IsMatchEnded())
 	{
-		if (Mode)
-		{
-			Mode->RestartMatch();
-		}
-		else
-		{
-			UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this, true)), true);
-		}
+		UGameplayStatics::OpenLevel(this,
+			FName(*UGameplayStatics::GetCurrentLevelName(this, true)), true,
+			TEXT("?game=/Script/Breachpoint.LobbyGameMode"));
+		return;
 	}
+
+	// Otherwise toggle pause overlay
+	HUD->bPauseMenuOpen = !HUD->bPauseMenuOpen;
+	HUD->PauseSelectedIndex = 0;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Pawn management (unchanged from original)
+// ═══════════════════════════════════════════════════════════════════════════════
 
 void AShooterPlayerController::OnPossess(APawn* InPawn)
 {

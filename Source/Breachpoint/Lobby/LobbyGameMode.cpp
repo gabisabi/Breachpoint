@@ -2,6 +2,7 @@
 
 #include "Lobby/LobbyGameMode.h"
 #include "Lobby/LobbyPlayerController.h"
+#include "Variant_Shooter/Modes/BreachpointHUD.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -18,6 +19,9 @@ ALobbyGameMode::ALobbyGameMode()
 
 	// No default pawn needed in the lobby
 	DefaultPawnClass = nullptr;
+
+	// Use the canvas-drawn HUD — works immediately without Blueprint setup
+	HUDClass = ABreachpointHUD::StaticClass();
 }
 
 void ALobbyGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)

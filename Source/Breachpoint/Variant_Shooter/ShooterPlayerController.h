@@ -11,9 +11,8 @@ class AShooterCharacter;
 class UShooterBulletCounterUI;
 
 /**
- *  Simple PlayerController for a first person shooter game
- *  Manages input mappings
- *  Respawns the player pawn when it's destroyed
+ *  PlayerController for the Breachpoint shooter modes.
+ *  Manages input, respawning, and HUD interaction.
  */
 UCLASS(abstract, config="Game")
 class BREACHPOINT_API AShooterPlayerController : public APlayerController
@@ -91,23 +90,18 @@ protected:
 	/** Returns true if the player should use UMG touch controls */
 	bool ShouldUseTouchControls() const;
 
-	/** Toggles the Breachpoint game mode menu */
-	void ToggleModeMenu();
+	// ── HUD navigation keys ──────────────────────────────────────
 
-	/** Opens the level with the given game mode index from the menu */
-	void SelectGameMode(int32 ModeIndex);
+	/** Arrow / navigation key handlers routed to BreachpointHUD */
+	void OnUpPressed();
+	void OnDownPressed();
+	void OnLeftPressed();
+	void OnRightPressed();
+	void OnConfirmPressed();
+	void OnBackPressed();
 
-	/** Key binding wrappers for the mode menu */
-	void SelectMode1() { SelectGameMode(0); }
-	void SelectMode2() { SelectGameMode(1); }
-	void SelectMode3() { SelectGameMode(2); }
-	void SelectMode4() { SelectGameMode(3); }
-
-	/** Restarts the match when it has ended or the menu is open */
-	void HandleRestartKey();
-
-	/** Returns true if the Breachpoint mode menu is currently open */
-	bool IsModeMenuOpen() const;
+	/** Tab key — toggles pause during gameplay, returns to lobby from end screen */
+	void OnTabPressed();
 
 public:
 

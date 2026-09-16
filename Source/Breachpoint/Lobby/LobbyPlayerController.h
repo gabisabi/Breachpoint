@@ -10,7 +10,8 @@ class ULobbyUI;
 
 /**
  * Player controller used in the lobby level.
- * Creates and manages the lobby UI widget and handles the ready-up state.
+ * Creates and manages the lobby UI widget, handles canvas HUD navigation,
+ * and manages the ready-up state.
  */
 UCLASS()
 class BREACHPOINT_API ALobbyPlayerController : public APlayerController
@@ -23,6 +24,7 @@ public:
 	//~ Begin APlayerController Interface
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void SetupInputComponent() override;
 	//~ End APlayerController Interface
 
 	/** The widget class to spawn for the lobby UI (assign a UMG Blueprint subclass) */
@@ -50,6 +52,15 @@ public:
 	void ServerSetReady(bool bNewReady);
 
 protected:
+
+	// ── Canvas HUD navigation key handlers ───────────────────────
+	void OnUpPressed();
+	void OnDownPressed();
+	void OnLeftPressed();
+	void OnRightPressed();
+	void OnConfirmPressed();
+	void OnBackPressed();
+
 	/** Creates and displays the lobby UI widget */
 	void CreateLobbyUI();
 

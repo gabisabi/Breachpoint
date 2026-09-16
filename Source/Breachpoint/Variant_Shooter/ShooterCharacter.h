@@ -204,6 +204,12 @@ public:
 	/** Returns true if the character owns at least one weapon */
 	bool HasAnyWeapon() const { return OwnedWeapons.Num() > 0; }
 
+	/** Returns the list of owned weapons (for HUD display) */
+	const TArray<AShooterWeapon*>& GetOwnedWeapons() const { return OwnedWeapons; }
+
+	/** Returns the currently equipped weapon (for HUD display) */
+	AShooterWeapon* GetCurrentWeapon() const { return CurrentWeapon; }
+
 	/** Destroys all owned weapons. Used by game modes that manage the player's loadout */
 	void RemoveAllWeapons();
 };

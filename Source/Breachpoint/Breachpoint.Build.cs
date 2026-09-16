@@ -39,7 +39,8 @@ public class Breachpoint : ModuleRules
 			"Breachpoint/Variant_Shooter/Modes",
 			"Breachpoint/Variant_Shooter/Movement",
 			"Breachpoint/VR",
-			"Breachpoint/Lobby"
+			"Breachpoint/Lobby",
+			"Breachpoint/BodyCam"
 		});
 
 		// Uncomment if you are using Slate UI
